@@ -345,7 +345,11 @@ setup_system () {
 }
 
 setup_git () {
+    info 'setting up git'
+
     git config --global core.excludesfile ~/.gitignore_global
+
+    success 'setup git complete'
 }
 
 ###############################################################################
@@ -353,34 +357,30 @@ setup_git () {
 ###############################################################################
 
 setup () {
-    info 'Setting up'
+    info 'setting up'
 
     setup_chrome
     setup_textedit
     setup_system
 
-    success 'Setup complete'
+    success 'setup complete'
 }
 
 main () {
     echo ''
     install_dotfiles
-    source ~/.bashrc
-    source ~/.bash_profile
-    echo ''
-    install_homebrew
-    echo ''
-    install_apps
-    echo ''
+    setup_git
+    # source ~/.bashrc
+    # source ~/.bash_profile
+    # echo ''
+    # install_homebrew
+    # echo ''
+    # install_apps
+    # echo ''
 
-    echo ''
-    success 'All installed!'
-    echo ''
-    info 'Restarting in 60s'
-    countdown 60
-    warn 'Restart!'
-    shutdown -r now
-
+    # echo ''
+    # success 'All installed!'
+    # echo ''
 }
 
 main
