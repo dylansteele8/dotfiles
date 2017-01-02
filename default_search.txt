@@ -1,0 +1,37 @@
+jq '.protection.macs.default_search_provider + {"keyword": 4}'  /Users/dylan/Library/Application Support/Google/Chrome/Default/Preferences 
+
+
+
+"default_search_provider": {
+    "synced_guid": "4ea9bc63-a7a2-433e-b8cd-889605463fba"
+  },
+  "default_search_provider_data": {
+    "template_url_data": {
+      "alternate_urls": [],
+      "created_by_policy": false,
+      "date_created": "13127555430101094",
+      "favicon_url": "https://duckduckgo.com/favicon.ico",
+      "id": "7",
+      "image_url": "",
+      "image_url_post_params": "",
+      "input_encodings": [
+        "UTF-8"
+      ],
+      "instant_url": "",
+      "instant_url_post_params": "",
+      "keyword": "duckduckgo.com",
+      "last_modified": "13127555430101094",
+      "new_tab_url": "",
+      "originating_url": "https://duckduckgo.com/opensearch.xml?atb=v45-3__",
+      "prepopulate_id": 0,
+      "safe_for_autoreplace": true,
+      "search_terms_replacement_key": "",
+      "search_url_post_params": "",
+      "short_name": "DuckDuckGo",
+      "suggestions_url": "https://duckduckgo.com/ac/?q={searchTerms}&type=list",
+      "suggestions_url_post_params": "",
+      "synced_guid": "4ea9bc63-a7a2-433e-b8cd-889605463fba",
+      "url": "https://duckduckgo.com/?q={searchTerms}&atb=v45-3__",
+      "usage_count": 0
+    }
+  },
