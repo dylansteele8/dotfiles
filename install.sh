@@ -13,11 +13,19 @@ IGNORE=(
     "README.md"
     ".DS_Store"
     "install.sh"
-    "extensions.txt"
+    "extension.json"
     "default_search.txt"
 )
 
 DOTFILES_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+CHROME_EXTENSIONS=(
+   "cjpalhdlnbpafiamejdnhcphjbkeiagm" # uBlock
+   "hdokiejnpimakedhajhdlcegeplioahd" # LastPass
+   "ojhmphdkpgbibohbnpbfiefkgieacjmh" # Currently
+   "niloccemoadcdkdjlinkgdfekeahmflj" # Pocket
+   "immpkjjlgappgfkkfieppnmlhakdmaab" # Imagus
+)
 
 info () {
     printf "\r  [ \033[00;34m..\033[0m ] $1\n"
@@ -35,6 +43,10 @@ fail () {
     printf "\r\033[2K  [\033[0;31mFAIL\033[0m] $1\n"
     echo ''
     exit
+}
+
+warn () {
+    printf "\r\033[2K  [ \033[00;33mWARN\033[0m ] $1\n"
 }
 
 link_file () {
@@ -134,6 +146,8 @@ install_dotfiles () {
         dst="$HOME/.$(basename "$src")"
         link_file "$src" "$dst"
     done
+
+    success 'installed dotfiles'
     
 }
 
@@ -147,6 +161,8 @@ install_homebrew () {
 
     # Install Homebrew
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+    success 'installed homebrew'
 }
 
 install_apps () {
@@ -172,11 +188,26 @@ install_apps () {
     #   - Illustrator
     #   - InDesign
     #   - Photoshop
+
+    success 'installed apps'
 }
 
 ###############################################################################
 # Google Chrome Preferences
 ###############################################################################
+
+install_chrome_extensions () {
+    info 'installing Chrome extensions'
+
+    local extension_dir=~/Library/Application\ Support/Google/Chrome/External\ Extensions/
+
+    for extension in "${CHROME_EXTENSIONS[@]}"
+    do
+        cp ./extension.json "$extension_dir$extension.json"
+    done
+
+    success 'installed Chrome extensions'
+}
 
 setup_chrome () {
     info 'setting up Chrome'
@@ -209,6 +240,11 @@ setup_chrome () {
     defaults write com.google.Chrome VideoCaptureAllowed -bool false 
 
     ## TODO: Send a "Do not track request" by default
+
+    # Install extensions specified in CHROME_EXTENSIONS
+    install_chrome_extensions
+
+    success 'setup Chrome complete'
 }
 
 ###############################################################################
@@ -225,6 +261,8 @@ setup_textedit () {
     # Disable smart quotes
     # Change to `-int 1` for default behavior (smart quotes enabled)
     defaults write com.apple.TextEdit SmartQuotes -int 0
+
+    success 'setup TextEdit complete'
 }
 
 ###############################################################################
@@ -263,7 +301,7 @@ setup_system () {
     /usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:arrangeBy kind" ~/Library/Preferences/com.apple.finder.plist
 
     # Arrange list views by kind
-    /usr/libexec/PlistBuddy -c "Set :StandardViewSettings:ListViewSettings:arrangeBy kind" ~/Library/Preferences/com.apple.finder.plist
+    Defaults write com.apple.finder FXArrangeGroupViewBy -string "kind"
 
     # Don't send search queries to Apple from Safari
     defaults write com.apple.Safari UniversalSearchEnabled -bool false
@@ -295,18 +333,19 @@ setup_system () {
     #   - 12 = Notification Center
     defaults write com.apple.dock wvous-br-corner -int 5
     defaults write com.apple.dock wvous-br-modifier -int 0
+
+    # Change clock format in menu bar
+    # Possible values:
+    #   - 12 Hour Mode with AM/PM: EEE MMM d  h:mm:ss a
+    #   - 12 Hour Mode without AM/PM: EEE MMM d  h:mm:ss
+    #   - 24 Hour Mode: EEE MMM d  H:mm:ss
+    defaults write com.apple.menuextra.clock DateFormat -string 'EEE MMM d  H:mm:ss'
+
+    success 'setup System complete'
 }
 
-###############################################################################
-# Aliases
-###############################################################################
-
-setup_aliases () {
-    info 'setting up aliases'
-
-    alias nanobash='nano ~/.bashrc'
-    alias sourcebash='source ~/.bashrc'
-    alias cddev='cd ~/Developer'
+setup_git () {
+    git config --global core.excludesfile ~/.gitignore_global
 }
 
 ###############################################################################
@@ -314,25 +353,33 @@ setup_aliases () {
 ###############################################################################
 
 setup () {
-    info 'setup'
+    info 'Setting up'
 
     setup_chrome
     setup_textedit
     setup_system
-    setup_aliases
+
+    success 'Setup complete'
 }
 
 main () {
     echo ''
-    # install_dotfiles
+    install_dotfiles
+    source ~/.bashrc
+    source ~/.bash_profile
     echo ''
-    # setup
+    install_homebrew
+    echo ''
+    install_apps
+    echo ''
 
     echo ''
-    echo 'All installed!'
+    success 'All installed!'
     echo ''
-    echo 'Restarting in 60s'
-    countdown 60 && echo 'Shutdown!' # shutdown -r now
+    info 'Restarting in 60s'
+    countdown 60
+    warn 'Restart!'
+    shutdown -r now
 
 }
 
