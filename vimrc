@@ -30,6 +30,7 @@ Plug 'scrooloose/syntastic'
 Plug 'vim-scripts/a.vim'
 Plug 'jez/vim-better-sml'
 Plug 'valloric/youcompleteme'
+Plug 'rust-lang/rust.vim'
 call plug#end()
 
 " Tab settings

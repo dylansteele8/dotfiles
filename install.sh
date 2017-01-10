@@ -160,24 +160,72 @@ install_homebrew () {
     info 'installing homebrew'
 
     # Install Homebrew
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/
+                      Homebrew/install/master/install)"
 
     success 'installed homebrew'
 }
+
+###############################################################################
+# ZSH
+###############################################################################
+
+install_oh_my_zsh () {
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+}
+
+###############################################################################
+# Rust
+###############################################################################
+
+install_rust () {
+    info 'installing rust'
+
+    # Using rustup to manage rust versions
+    # See https://rustup.rs/ for more information
+    curl https://sh.rustup.rs -sSf | sh
+
+    success 'installed rust'
+}
+
+###############################################################################
+# Jekyll
+###############################################################################
+
+install_jekyll () {
+    # After running `brew install ruby` and restarting terminal
+    gem install jekyll bundler
+}
+
+###############################################################################
+# Apps
+###############################################################################
 
 install_apps () {
     info 'installing apps'
 
     # Install Node
     brew install node
+    # Install Heroku CLI
+    # Remember to login to Heroku with `heroku login`
+    brew install heroku
+    # To set up jekyll
+    brew install ruby
+    # I DON'T WANT THIS ONE
+    brew install imagemagick
 
     # Install applications through cask
     # See https://caskroom.github.io for more information
-    brew cask install google-chrome
+    # Need to set Chrome as default browser
+    # with open -a "Google Chrome" --args --make-default-browser
+    brew cask install google-chrome 
     brew cask install atom
     brew cask install spotify
     brew cask install appcleaner
-    brew cask install flux # Need to open f.lux with `open -a flux` later
+    # Need to open f.lux with `open -a flux` later
+    brew cask install flux
+    brew cask install teamviewer
+    brew cask isntall ngrok
 
     # Other Apps to Install
     #   - Pages
@@ -339,48 +387,102 @@ setup_system () {
     #   - 12 Hour Mode with AM/PM: EEE MMM d  h:mm:ss a
     #   - 12 Hour Mode without AM/PM: EEE MMM d  h:mm:ss
     #   - 24 Hour Mode: EEE MMM d  H:mm:ss
-    defaults write com.apple.menuextra.clock DateFormat -string 'EEE MMM d  H:mm:ss'
+    defaults write com.apple.menuextra.clock DateFormat -string 'EEE MMM d  H:mm'
+    
+    # Disable auto-correct
+    # Change to `-bool true` for default behavior
+    defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
+
+    # Turn off keyboard illumination after 5 minutes (300 seconds)
+    defaults write com.apple.BezelServices kDimTime -int 300
 
     success 'setup System complete'
 }
+
+###############################################################################
+# Vim
+###############################################################################
+
+setup_vim () {
+    info 'installing vim-plug'
+
+    # Using vim-plug to manage vim plug-ins
+    # See https://github.com/junegunn/vim-plug for more information
+    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+          https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+    info 'Run `:PlugInstall` after downloading to install the plugins specified
+          in the .vimrc'
+
+    success 'installed vim-plug'
+}
+
+###############################################################################
+# Atom
+###############################################################################
+
+setup_atom () {
+    info 'installing atom packages'
+
+    apm install atom-material-ui
+    apm install atom-material-syntax
+    apm install file-icons
+    apm install linter
+    # Install scss linter
+    gem install scss_lint
+    apm install linter-scss-lint
+
+    success 'installed atom packages'
+}
+
+###############################################################################
+# Git
+###############################################################################
 
 setup_git () {
     info 'setting up git'
 
     git config --global core.excludesfile ~/.gitignore_global
+    git config --global user.name "Dylan Steele"
+    git config --global user.email "dylansteele8@gmail.com"
+    git config --global core.editor "/usr/bin/vim"
 
     success 'setup git complete'
 }
 
 ###############################################################################
-# Setup
+# Main
 ###############################################################################
 
-setup () {
-    info 'setting up'
-
-    setup_chrome
-    setup_textedit
-    setup_system
-
-    success 'setup complete'
-}
-
 main () {
-    echo ''
+    # echo ''
     install_dotfiles
-    setup_git
-    # source ~/.bashrc
-    # source ~/.bash_profile
     # echo ''
     # install_homebrew
     # echo ''
+    # install_oh_my_zsh
+    # echo ''
+    # install_rust
+    # echo ''
+    # install_jekyll
+    # echo ''
     # install_apps
     # echo ''
+    # setup_chrome
+    # echo ''
+    # setup_textedit
+    # echo ''
+    # setup_system
+    # echo ''
+    # setup_vim
+    # echo ''
+    # setup_atom
+    # echo ''
+    # setup_git
 
-    # echo ''
-    # success 'All installed!'
-    # echo ''
+    echo ''
+    success 'All installed!'
+    echo ''
 }
 
 main

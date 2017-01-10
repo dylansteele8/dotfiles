@@ -20,8 +20,6 @@ export PATH="/usr/local/bin:/usr/local/opt/ruby/bin:$PATH"
 # Functions
 ###############################################################################
 
-#!/bin/bash
-
 countdown () {
   local n="$1"
   while [[ $n -gt 0 ]]; do
