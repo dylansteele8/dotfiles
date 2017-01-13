@@ -431,6 +431,8 @@ setup_atom () {
     # Install scss linter
     gem install scss_lint
     apm install linter-scss-lint
+    # Install code formatter
+    apm install prettier-atom
 
     success 'installed atom packages'
 }

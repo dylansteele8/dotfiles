@@ -21,6 +21,9 @@ nnoremap <C-L> :nohlsearch<CR><C-L>
 " StripWhiteSpace
 :command StripWhiteSpace %s/\s\+$//
 
+" JS prettier formatter
+autocmd FileType javascript set formatprg=prettier\ --stdin
+
 " Vim-plug
 call plug#begin()
 Plug 'itchyny/lightline.vim'
