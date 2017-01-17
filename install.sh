@@ -25,6 +25,7 @@ CHROME_EXTENSIONS=(
    "ojhmphdkpgbibohbnpbfiefkgieacjmh" # Currently
    "niloccemoadcdkdjlinkgdfekeahmflj" # Pocket
    "immpkjjlgappgfkkfieppnmlhakdmaab" # Imagus
+   "pkehgijcmpdhfbdbbnkijodmdjhbjlgp" # Privacy Badger
 )
 
 info () {
@@ -431,8 +432,7 @@ setup_atom () {
     # Install scss linter
     gem install scss_lint
     apm install linter-scss-lint
-    # Install code formatter
-    apm install prettier-atom
+    apm install linter-eslint
 
     success 'installed atom packages'
 }
