@@ -152,7 +152,6 @@ install_dotfiles () {
     
 }
 
-
 ###############################################################################
 # Homebrew
 ###############################################################################
@@ -165,6 +164,19 @@ install_homebrew () {
                       Homebrew/install/master/install)"
 
     success 'installed homebrew'
+}
+
+###############################################################################
+# pip
+###############################################################################
+
+install_pip () {
+    info 'installing pip'
+
+    # Install pip
+    sudo easy_install pip
+
+    success 'installed pip'
 }
 
 ###############################################################################
@@ -461,6 +473,8 @@ main () {
     install_dotfiles
     # echo ''
     # install_homebrew
+    # echo ''
+    # install_pip
     # echo ''
     # install_oh_my_zsh
     # echo ''
