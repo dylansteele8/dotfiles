@@ -175,6 +175,9 @@ install_pip () {
 
     # Install pip
     sudo easy_install pip
+    # Install virtualenv
+    sudo pip install virtualenv
+
 
     success 'installed pip'
 }
