@@ -18,7 +18,7 @@ ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[yellow]%}* %{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_CLEAN=""
 
 # oh-my-zsh $(git_prompt_info) puts 'dirty' behind branch
-git_custom_prompt() {
+git_custom_prompt () {
   # branch name (.oh-my-zsh/plugins/git/git.plugin.zsh)
   local branch=$(current_branch)
   if [ -n "$branch" ]; then
@@ -27,6 +27,9 @@ git_custom_prompt() {
   fi
 }
 
+virtual_env_custom_prompt () {
+  [ $VIRTUAL_ENV ] && echo "%{$fg[yellow]%}("`basename $VIRTUAL_ENV`")"
+}
 
 #
 # Main prompt
@@ -42,7 +45,7 @@ local return_status="%(?:%{$fg[green]%}$prompt_string:%{$fg[red]%}$prompt_string
 PROMPT='%{$fg[cyan]%}┌ ${host_name} ${path_string} %{$reset_color%}
 %{$fg[cyan]%}└─── ${return_status} '
 
-PROMPT='%{$fg[cyan]%}${host_name} ${path_string}%{$reset_color%}%{$fg[cyan]%} ${return_status} '
+# PROMPT='%{$fg[cyan]%}${host_name} ${path_string}%{$reset_color%}%{$fg[cyan]%} ${return_status} '
 
 
 #
@@ -51,4 +54,4 @@ PROMPT='%{$fg[cyan]%}${host_name} ${path_string}%{$reset_color%}%{$fg[cyan]%} ${
 
 local time="%{$fg[magenta]%}%*%{$reset_color%}"
 
-RPROMPT='$(git_custom_prompt) ${time}'
+RPROMPT='$(virtual_env_custom_prompt) $(git_custom_prompt) ${time}'

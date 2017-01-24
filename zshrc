@@ -118,6 +118,11 @@ countdown () {
   printf "\r"
 }
 
+function activate() { 
+  export VIRTUAL_ENV_DISABLE_PROMPT='1' 
+  source ./$1/bin/activate 
+}
+
 ###############################################################################
 # Aliases
 ###############################################################################
@@ -128,3 +133,4 @@ alias cddev='cd ~/Developer'
 alias ls='ls -G'
 alias la='ls -A'
 alias cddot='cd ~/Developer/dotfiles'
+alias cdbit='cd ~/Developer/bittrust-django && activate && cd ./bittrust'
