@@ -1,0 +1,3 @@
+Host cmu
+  HostName linux.andrew.cmu.edu
+  User dylans
