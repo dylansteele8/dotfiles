@@ -26,6 +26,7 @@ CHROME_EXTENSIONS=(
    "niloccemoadcdkdjlinkgdfekeahmflj" # Pocket
    "immpkjjlgappgfkkfieppnmlhakdmaab" # Imagus
    "pkehgijcmpdhfbdbbnkijodmdjhbjlgp" # Privacy Badger
+   "oknpjjbmpnndlpmnhmekjpocelpnlfdi" # Mercury Reader
 )
 
 info () {
