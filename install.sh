@@ -413,6 +413,9 @@ setup_system () {
     # Turn off keyboard illumination after 5 minutes (300 seconds)
     defaults write com.apple.BezelServices kDimTime -int 300
 
+    # Set cmd-shift-v to paste and match style in all applications
+    defaults write NSGlobalDomain NSUserKeyEquivalents -dict 'Paste and Match Style' '@$v'  
+
     success 'setup System complete'
 }
 
