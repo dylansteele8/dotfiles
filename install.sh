@@ -239,10 +239,11 @@ install_apps () {
     brew cask install atom
     brew cask install spotify
     brew cask install appcleaner
-    # Need to open f.lux with `open -a flux` later
-    brew cask install flux
     brew cask install teamviewer
     brew cask isntall ngrok
+    brew cask install psequel
+    brew cask install bittorrent
+
 
     # Other Apps to Install
     #   - Pages
@@ -414,7 +415,10 @@ setup_system () {
     defaults write com.apple.BezelServices kDimTime -int 300
 
     # Set cmd-shift-v to paste and match style in all applications
-    defaults write NSGlobalDomain NSUserKeyEquivalents -dict 'Paste and Match Style' '@$v'  
+    defaults write NSGlobalDomain NSUserKeyEquivalents -dict 'Paste and Match Style' '@$v'
+
+    # Set Desktop wallpaper to user folder
+    defaults write com.apple.systempreferences DSKDesktopPrefPane -dict 'UserFolderPaths' '("Users/dylan/Documents/Graphics/Desktop Wallpapers")'
 
     success 'setup System complete'
 }
@@ -448,6 +452,7 @@ setup_atom () {
     apm install atom-material-syntax
     apm install file-icons
     apm install linter
+    apm install linter-ui-default
     # Install scss linter
     gem install scss_lint
     apm install linter-scss-lint
