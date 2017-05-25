@@ -13,7 +13,7 @@
 #
 
 ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[green]%}"
-ZSH_THEME_GIT_PROMPT_SUFFIX="%{$fg[green]%} |%{$reset_color%}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="%{$fg[green]%} %{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[yellow]%}* %{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_CLEAN=""
 
@@ -54,4 +54,4 @@ PROMPT='%{$fg[cyan]%}┌ ${host_name} ${path_string} %{$reset_color%}
 
 local time="%{$fg[magenta]%}%*%{$reset_color%}"
 
-RPROMPT='$(virtual_env_custom_prompt) $(git_custom_prompt) ${time}'
+RPROMPT='$(virtual_env_custom_prompt) $(git_custom_prompt)'
