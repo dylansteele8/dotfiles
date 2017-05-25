@@ -7,51 +7,46 @@
 #
 # Branch icon requires powerline-patched fonts.
 
+#
+# Colors
+#
+CYAN="%{$fg[cyan]%}"
+GREEN="%{$fg[green]%}"
+YELLOW="%{$fg[yellow]%}"
+MAGENTA="%{$fg[magenta]%}"
+RED="%{$fg[red]%}"
+RESET="%{$reset_color%}"
 
 #
 # Git setup
 #
+ZSH_THEME_GIT_PROMPT_PREFIX="${RESET}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="${RESET}"
+ZSH_THEME_GIT_PROMPT_DIRTY="${YELLOW}* ${RESET}"
+ZSH_THEME_GIT_PROMPT_CLEAN="${RESET}"
 
-ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[green]%}"
-ZSH_THEME_GIT_PROMPT_SUFFIX="%{$fg[green]%} %{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[yellow]%}* %{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_CLEAN=""
-
-# oh-my-zsh $(git_prompt_info) puts 'dirty' behind branch
 git_custom_prompt () {
-  # branch name (.oh-my-zsh/plugins/git/git.plugin.zsh)
   local branch=$(current_branch)
-  if [ -n "$branch" ]; then
+  if [ -n "${branch}" ]; then
     # parse_git_dirty echoes PROMPT_DIRTY or PROMPT_CLEAN (.oh-my-zsh/lib/git.zsh)
-    echo "$(parse_git_dirty)$ZSH_THEME_GIT_PROMPT_PREFIX$branch$ZSH_THEME_GIT_PROMPT_SUFFIX"
+    echo "$(parse_git_dirty)${ZSH_THEME_GIT_PROMPT_PREFIX}${branch}${ZSH_THEME_GIT_PROMPT_SUFFIX}"
   fi
 }
 
 virtual_env_custom_prompt () {
-  [ $VIRTUAL_ENV ] && echo "%{$fg[yellow]%}("`basename $VIRTUAL_ENV`")"
+  [ $VIRTUAL_ENV ] && echo "$YELLOW("`basename $VIRTUAL_ENV`")$RESET"
 }
 
 #
 # Main prompt
 #
-
-local host_name="%{$fg[magenta]%}λ"
-local path_string="%{$fg[yellow]%}%~"
+local host_name="${MAGENTA}λ"
+local path_string="${YELLOW}~"
 local prompt_string="»"
-
-# Make prompt_string red if the previous command failed.
-local return_status="%(?:%{$fg[green]%}$prompt_string:%{$fg[red]%}$prompt_string)"
-
-PROMPT='%{$fg[cyan]%}┌ ${host_name} ${path_string} %{$reset_color%}
-%{$fg[cyan]%}└─── ${return_status} '
-
-# PROMPT='%{$fg[cyan]%}${host_name} ${path_string}%{$reset_color%}%{$fg[cyan]%} ${return_status} '
-
+local return_status="%(?:${GREEN}${prompt_string}:${RED}${prompt_string})"
+PROMPT="${host_name} ${path_string} ${return_status} "
 
 #
 # Right Prompt
 #
-
-local time="%{$fg[magenta]%}%*%{$reset_color%}"
-
-RPROMPT='$(virtual_env_custom_prompt) $(git_custom_prompt)'
+RPROMPT="$(virtual_env_custom_prompt) $(git_custom_prompt)"
