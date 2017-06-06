@@ -41,9 +41,9 @@ virtual_env_custom_prompt () {
 # Main prompt
 #
 local host_name="${MAGENTA}λ"
-local path_string="${YELLOW}~"
+local path_string="${YELLOW}%~"
 local prompt_string="»"
-local return_status="%(?:${GREEN}${prompt_string}:${RED}${prompt_string})"
+local return_status="%(?:${GREEN}${prompt_string}:${RED}${prompt_string})${RESET}"
 PROMPT="${host_name} ${path_string} ${return_status} "
 
 #
