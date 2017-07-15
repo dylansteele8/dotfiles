@@ -120,10 +120,8 @@ function activate() {
 # Aliases
 ###############################################################################
 
-alias nanobash='nano ~/.bashrc'
-alias sourcebash='source ~/.bashrc'
-alias cddev='cd ~/Developer'
+alias dev='cd ~/Developer'
 alias ls='ls -G'
 alias la='ls -A'
-alias cddot='cd ~/Developer/dotfiles'
-alias cdbitvue='cd ~/Developer/bittrust-vue && atom .'
+alias dot='cd ~/Developer/dotfiles'
+alias bitvue='cd ~/Developer/bittrust-vue && atom .'
