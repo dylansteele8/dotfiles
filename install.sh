@@ -14,7 +14,6 @@ IGNORE=(
     ".DS_Store"
     "install.sh"
     "extension.json"
-    "default_search.txt"
 )
 
 DOTFILES_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -150,7 +149,7 @@ install_dotfiles () {
     done
 
     success 'installed dotfiles'
-    
+
 }
 
 ###############################################################################
@@ -235,7 +234,7 @@ install_apps () {
     # See https://caskroom.github.io for more information
     # Need to set Chrome as default browser
     # with open -a "Google Chrome" --args --make-default-browser
-    brew cask install google-chrome 
+    brew cask install google-chrome
     brew cask install atom
     brew cask install spotify
     brew cask install appcleaner
@@ -266,6 +265,9 @@ install_chrome_extensions () {
     info 'installing Chrome extensions'
 
     local extension_dir=~/Library/Application\ Support/Google/Chrome/External\ Extensions/
+    if [ ! -d "$extension_dir" ]; then
+      mkdir "$extension_dir"
+    fi
 
     for extension in "${CHROME_EXTENSIONS[@]}"
     do
@@ -300,10 +302,10 @@ setup_chrome () {
     defaults write com.google.Chrome DefaultGeolocationSetting -int 2
 
     # Prevent audio capturing
-    defaults write com.google.Chrome AudioCaptureAllowed -bool false
+    # defaults write com.google.Chrome AudioCaptureAllowed -bool false
 
     # Prevent video capturing
-    defaults write com.google.Chrome VideoCaptureAllowed -bool false 
+    # defaults write com.google.Chrome VideoCaptureAllowed -bool false
 
     ## TODO: Send a "Do not track request" by default
 
@@ -340,7 +342,7 @@ setup_system () {
 
     # Don’t automatically rearrange Spaces based on most recent use
     # Change to `bool true` for default behavior
-    defaults write com.apple.dock mru-spaces -bool false 
+    defaults write com.apple.dock mru-spaces -bool false
 
     # Make Crash Reporter appear as a native notification
     # Change to `-int 0` for default behavior (non-native notification)
@@ -406,7 +408,7 @@ setup_system () {
     #   - 12 Hour Mode without AM/PM: EEE MMM d  h:mm:ss
     #   - 24 Hour Mode: EEE MMM d  H:mm:ss
     defaults write com.apple.menuextra.clock DateFormat -string 'EEE MMM d  H:mm'
-    
+
     # Disable auto-correct
     # Change to `-bool true` for default behavior
     defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
@@ -482,7 +484,7 @@ setup_git () {
 
 main () {
     # echo ''
-    install_dotfiles
+    # install_dotfiles
     # echo ''
     # install_homebrew
     # echo ''
@@ -496,7 +498,7 @@ main () {
     # echo ''
     # install_apps
     # echo ''
-    # setup_chrome
+    setup_chrome
     # echo ''
     # setup_textedit
     # echo ''
