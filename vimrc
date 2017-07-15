@@ -19,7 +19,7 @@ set hlsearch
 nnoremap <C-L> :nohlsearch<CR><C-L>
 
 " StripWhiteSpace
-:command StripWhiteSpace %s/\s\+$//
+autocmd BufWritePre *  %s/\s\+$//e
 
 " JS prettier formatter
 autocmd FileType javascript set formatprg=prettier\ --stdin
@@ -30,10 +30,16 @@ Plug 'itchyny/lightline.vim'
 Plug 'tpope/vim-surround'
 Plug 'Raimondi/delimitMate'
 Plug 'scrooloose/syntastic'
-Plug 'vim-scripts/a.vim'
 Plug 'jez/vim-better-sml'
 " Plug 'valloric/youcompleteme'
 Plug 'rust-lang/rust.vim'
+Plug 'joshdick.onedark.vim'
+Plug 'othree/html5.vim'
+Plug 'Chielf92/vim-autoformat'
+Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'ervandew/supertab'
+Plug 'pangloss/vim-javascript'
+Plug 'artoj/qmake-syntax-vim'
 call plug#end()
 
 " Tab settings
@@ -43,5 +49,11 @@ set laststatus=2
 set colorcolumn=80
 set expandtab
 
+autocmd FileType cpp,hpp setlocal tabstop=4 shiftwidth=4
+
 set splitright         "   Vertical splits  use   right half  of screen
 set splitbelow         " Horizontal splits  use  bottom half  of screen
+
+colorscheme onedark
+
+let g:syntastic_javascript_checkers = ['eslint']
