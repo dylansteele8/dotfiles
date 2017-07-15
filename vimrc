@@ -1,28 +1,51 @@
-set nocompatible
-
-" Basic commands
-set backspace=indent,eol,start
-
-set ruler
-set showcmd
+" Visual
+set cursorline
 syntax enable
-set nu
-highlight LineNr ctermfg=lightgrey
-set mouse=a
-set lazyredraw
-set showmatch
+colorscheme onedark
+
+" Pretty vertical split
+set fillchars=vert:|   " vertical box-drawing character
+set splitright         " Vertical splits use right half of screen
+set splitbelow         " Horizontal splits use bottom half of screen
+autocmd ColorScheme * highlight VertSplit cterm=NONE ctermbg=NONE guibg=NONE
+
+set nocompatible
+filetype plugin indent on
+syntax on
+
+" Usability options
+set ignorecase
 set smartcase
+set backspace=indent,eol,start
+set autoindent
+set nostartofline
+set ruler
+set laststatus=2
+set confirm
+set visualbell
+set mouse=a
+set cmdheight=2
+set number
+set notimeout ttimeout ttimeoutlen=200
+set pastetoggle=<F10>
+set ttyfast
 
-" Search settings
-set incsearch
-set hlsearch
-nnoremap <C-L> :nohlsearch<CR><C-L>
+" Indentation options
+set expandtab
+set shiftwidth=2
+set softtabstop=2
+set tabstop=2
+set shiftwidth=2
+set colorcolumn=80
 
-" StripWhiteSpace
+" Enable transparent background
+hi Normal guibg=NONE ctermbg=NONE
+
+" Strip whitespace on save
 autocmd BufWritePre *  %s/\s\+$//e
 
 " JS prettier formatter
-autocmd FileType javascript set formatprg=prettier\ --stdin
+" autocmd FileType javascript set formatprg=prettier\ --stdin
 
 " Vim-plug
 call plug#begin()
@@ -31,8 +54,7 @@ Plug 'tpope/vim-surround'
 Plug 'Raimondi/delimitMate'
 Plug 'scrooloose/syntastic'
 Plug 'jez/vim-better-sml'
-" Plug 'valloric/youcompleteme'
-Plug 'rust-lang/rust.vim'
+Plug 'valloric/youcompleteme'
 Plug 'joshdick.onedark.vim'
 Plug 'othree/html5.vim'
 Plug 'Chielf92/vim-autoformat'
@@ -41,19 +63,3 @@ Plug 'ervandew/supertab'
 Plug 'pangloss/vim-javascript'
 Plug 'artoj/qmake-syntax-vim'
 call plug#end()
-
-" Tab settings
-set tabstop=2
-set shiftwidth=2
-set laststatus=2
-set colorcolumn=80
-set expandtab
-
-autocmd FileType cpp,hpp setlocal tabstop=4 shiftwidth=4
-
-set splitright         "   Vertical splits  use   right half  of screen
-set splitbelow         " Horizontal splits  use  bottom half  of screen
-
-colorscheme onedark
-
-let g:syntastic_javascript_checkers = ['eslint']
