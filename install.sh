@@ -19,35 +19,86 @@ IGNORE=(
 DOTFILES_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 CHROME_EXTENSIONS=(
-   "cjpalhdlnbpafiamejdnhcphjbkeiagm" # uBlock
-   "hdokiejnpimakedhajhdlcegeplioahd" # LastPass
-   "ojhmphdkpgbibohbnpbfiefkgieacjmh" # Currently
-   "niloccemoadcdkdjlinkgdfekeahmflj" # Pocket
-   "immpkjjlgappgfkkfieppnmlhakdmaab" # Imagus
-   "pkehgijcmpdhfbdbbnkijodmdjhbjlgp" # Privacy Badger
-   "oknpjjbmpnndlpmnhmekjpocelpnlfdi" # Mercury Reader
+    "cjpalhdlnbpafiamejdnhcphjbkeiagm" # uBlock
+    "hdokiejnpimakedhajhdlcegeplioahd" # LastPass
+    "ojhmphdkpgbibohbnpbfiefkgieacjmh" # Currently
+    "niloccemoadcdkdjlinkgdfekeahmflj" # Pocket
+    "immpkjjlgappgfkkfieppnmlhakdmaab" # Imagus
+    "pkehgijcmpdhfbdbbnkijodmdjhbjlgp" # Privacy Badger
+    "oknpjjbmpnndlpmnhmekjpocelpnlfdi" # Mercury Reader
 )
 
+BREW_APPS=(
+    "heroku"
+    "node"
+)
+
+CASK_APPS=(
+    "appcleaner"
+    "atom"
+    "bittorrent"
+    "google-chrome"
+    "ngrok"
+    "psequel"
+    "spotify"
+    "teamviewer"
+)
+
+ATOM_PACKAGES=(
+    "atom-material-ui"
+    "atom-meterial_syntax"
+    "file-icons"
+    "linter"
+)
+
+RED=$(tput setaf 1)
+GREEN=$(tput setaf 2)
+YELLOW=$(tput setaf 3)
+BLUE=$(tput setaf 6)
+NORMAL=$(tput sgr0)
+UNDERLINE=$(tput smul)
+NO_UNDERLINE=$(tput rmul)
+
+print () {
+    printf "%$2s%$2s$1"
+}
+
 info () {
-    printf "\r  [ \033[00;34m..\033[0m ] $1\n"
+    print "${UNDERLINE}INFO:${NO_UNDERLINE} $1\n" $2
 }
 
 user () {
-    printf "\r  [ \033[0;33m??\033[0m ] $1\n"
+    print "${BLUE}${UNDERLINE}USER:${NO_UNDERLINE} $1${NORMAL} " $2
 }
 
 success () {
-    printf "\r\033[2K  [ \033[00;32mOK\033[0m ] $1\n"
+    print "${GREEN}${UNDERLINE}OK:${NO_UNDERLINE} $1${NORMAL}\n" $2
 }
 
 fail () {
-    printf "\r\033[2K  [\033[0;31mFAIL\033[0m] $1\n"
-    echo ''
+    print "${RED}${UNDERLINE}FAIL:${NO_UNDERLINE} $1${NORMAL}\n" $2
     exit
 }
 
 warn () {
-    printf "\r\033[2K  [ \033[00;33mWARN\033[0m ] $1\n"
+    print "${YELLOW}${UNDERLINE}WARN:${NO_UNDERLINE} $1${NORMAL}\n" $2
+}
+
+confirm () {
+    user "Would you like to $1?\n%6s[y]es, [n]o" $2
+
+    read -sn 1 action
+
+    case "$action" in
+        y )
+          print "\r%6s${GREEN}[y]es${BLUE}, [n]o${NORMAL}\n"
+          return 0;;
+        n )
+          print "\r%6s${BLUE}[y]es, ${RED}[n]o${NORMAL}\n"
+          return 1;;
+        * )
+        ;;
+    esac
 }
 
 link_file () {
@@ -60,8 +111,8 @@ link_file () {
     then
 
         if [ "$overwrite_all" == "false" ] && \
-               [ "$backup_all" == "false" ] && \
-               [ "$skip_all" == "false" ]
+           [ "$backup_all" == "false" ] && \
+           [ "$skip_all" == "false" ]
         then
 
             local currentSrc="$(readlink $dst)"
@@ -77,7 +128,7 @@ what do you want to do?\n\
         [s]kip, [S]kip all, [o]verwrite, \
 [O]verwrite all, [b]ackup, [B]ackup all?"
 
-                read -n 1 action
+                read action
 
                 case "$action" in
                     o )
@@ -134,7 +185,7 @@ what do you want to do?\n\
 ###############################################################################
 
 install_dotfiles () {
-    info 'installing dotfiles'
+    info "installing dotfiles"
 
     local overwrite_all=false backup_all=false skip_all=false
 
@@ -148,8 +199,7 @@ install_dotfiles () {
         link_file "$src" "$dst"
     done
 
-    success 'installed dotfiles'
-
+    success "installed dotfiles"
 }
 
 ###############################################################################
@@ -157,13 +207,13 @@ install_dotfiles () {
 ###############################################################################
 
 install_homebrew () {
-    info 'installing homebrew'
+    info "installing homebrew"
 
     # Install Homebrew
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/
-                      Homebrew/install/master/install)"
+    #/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/
+    #                  Homebrew/install/master/install)"
 
-    success 'installed homebrew'
+    success "installed homebrew"
 }
 
 ###############################################################################
@@ -171,15 +221,14 @@ install_homebrew () {
 ###############################################################################
 
 install_pip () {
-    info 'installing pip'
+    info "installing pip"
 
     # Install pip
     sudo easy_install pip
     # Install virtualenv
     sudo pip install virtualenv
 
-
-    success 'installed pip'
+    success "installed pip"
 }
 
 ###############################################################################
@@ -191,58 +240,23 @@ install_oh_my_zsh () {
 }
 
 ###############################################################################
-# Rust
-###############################################################################
-
-install_rust () {
-    info 'installing rust'
-
-    # Using rustup to manage rust versions
-    # See https://rustup.rs/ for more information
-    curl https://sh.rustup.rs -sSf | sh
-
-    success 'installed rust'
-}
-
-###############################################################################
-# Jekyll
-###############################################################################
-
-install_jekyll () {
-    # After running `brew install ruby` and restarting terminal
-    gem install jekyll bundler
-}
-
-###############################################################################
 # Apps
 ###############################################################################
 
 install_apps () {
-    info 'installing apps'
+    info "installing apps"
 
-    # Install Node
-    brew install node
-    # Install Heroku CLI
-    # Remember to login to Heroku with `heroku login`
-    brew install heroku
-    # To set up jekyll
-    brew install ruby
-    # I DON'T WANT THIS ONE
-    brew install imagemagick
+    for brew_app in "${BREW_APPS[@]}"
+    do
+      brew install "${brew_app}"
+    done
 
     # Install applications through cask
     # See https://caskroom.github.io for more information
-    # Need to set Chrome as default browser
-    # with open -a "Google Chrome" --args --make-default-browser
-    brew cask install google-chrome
-    brew cask install atom
-    brew cask install spotify
-    brew cask install appcleaner
-    brew cask install teamviewer
-    brew cask isntall ngrok
-    brew cask install psequel
-    brew cask install bittorrent
-
+    for cask_app in "${CASK_APPS[@]}"
+    do
+      brew cask install "${cask_app}"
+    done
 
     # Other Apps to Install
     #   - Pages
@@ -254,7 +268,7 @@ install_apps () {
     #   - InDesign
     #   - Photoshop
 
-    success 'installed apps'
+    success "installed apps"
 }
 
 ###############################################################################
@@ -262,7 +276,7 @@ install_apps () {
 ###############################################################################
 
 install_chrome_extensions () {
-    info 'installing Chrome extensions'
+    info "installing Chrome extensions"
 
     local extension_dir=~/Library/Application\ Support/Google/Chrome/External\ Extensions/
     if [ ! -d "$extension_dir" ]; then
@@ -271,14 +285,14 @@ install_chrome_extensions () {
 
     for extension in "${CHROME_EXTENSIONS[@]}"
     do
-        cp ./extension.json "$extension_dir$extension.json"
+        cp ./extension.json "${extension_dir}${extension}.json"
     done
 
-    success 'installed Chrome extensions'
+    success "installed Chrome extensions"
 }
 
 setup_chrome () {
-    info 'setting up Chrome'
+    info "setting up Chrome"
 
     # Change what opens when Chrome is launched:
     #   - 1 = Restore the last session
@@ -312,7 +326,7 @@ setup_chrome () {
     # Install extensions specified in CHROME_EXTENSIONS
     install_chrome_extensions
 
-    success 'setup Chrome complete'
+    success "setup Chrome complete"
 }
 
 ###############################################################################
@@ -320,7 +334,7 @@ setup_chrome () {
 ###############################################################################
 
 setup_textedit () {
-    info 'setting up TextEdit'
+    info "setting up TextEdit"
 
     # Open TextEdit with Plain Text mode
     # Change to `-int 1` for default behavior (Rich Text mode)
@@ -330,7 +344,7 @@ setup_textedit () {
     # Change to `-int 1` for default behavior (smart quotes enabled)
     defaults write com.apple.TextEdit SmartQuotes -int 0
 
-    success 'setup TextEdit complete'
+    success "setup TextEdit complete"
 }
 
 ###############################################################################
@@ -338,7 +352,7 @@ setup_textedit () {
 ###############################################################################
 
 setup_system () {
-    info 'setting up System'
+    info "setting up System"
 
     # Don’t automatically rearrange Spaces based on most recent use
     # Change to `bool true` for default behavior
@@ -422,7 +436,7 @@ setup_system () {
     # Set Desktop wallpaper to user folder
     defaults write com.apple.systempreferences DSKDesktopPrefPane -dict 'UserFolderPaths' '("Users/dylan/Documents/Graphics/Desktop Wallpapers")'
 
-    success 'setup System complete'
+    success "setup System complete"
 }
 
 ###############################################################################
@@ -430,17 +444,17 @@ setup_system () {
 ###############################################################################
 
 setup_vim () {
-    info 'installing vim-plug'
+    info "installing vim-plug"
 
     # Using vim-plug to manage vim plug-ins
     # See https://github.com/junegunn/vim-plug for more information
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
           https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-    info 'Run `:PlugInstall` after downloading to install the plugins specified
-          in the .vimrc'
+    info "Run `:PlugInstall` after downloading to install the plugins specified
+          in the .vimrc"
 
-    success 'installed vim-plug'
+    success "installed vim-plug"
 }
 
 ###############################################################################
@@ -448,19 +462,14 @@ setup_vim () {
 ###############################################################################
 
 setup_atom () {
-    info 'installing atom packages'
+    info "installing atom packages"
 
-    apm install atom-material-ui
-    apm install atom-material-syntax
-    apm install file-icons
-    apm install linter
-    apm install linter-ui-default
-    # Install scss linter
-    gem install scss_lint
-    apm install linter-scss-lint
-    apm install linter-eslint
+    for atom_package in "${ATOM_PACKAGES[@]}"
+    do
+      apm install "${atom_package}"
+    done
 
-    success 'installed atom packages'
+    success "installed atom packages"
 }
 
 ###############################################################################
@@ -468,14 +477,14 @@ setup_atom () {
 ###############################################################################
 
 setup_git () {
-    info 'setting up git'
+    info "setting up git"
 
     git config --global core.excludesfile ~/.gitignore_global
     git config --global user.name "Dylan Steele"
     git config --global user.email "dylansteele8@gmail.com"
     git config --global core.editor "/usr/bin/vim"
 
-    success 'setup git complete'
+    success "setup git complete"
 }
 
 ###############################################################################
@@ -483,36 +492,64 @@ setup_git () {
 ###############################################################################
 
 main () {
-    # echo ''
-    # install_dotfiles
-    # echo ''
-    # install_homebrew
-    # echo ''
-    # install_pip
-    # echo ''
-    # install_oh_my_zsh
-    # echo ''
-    # install_rust
-    # echo ''
-    # install_jekyll
-    # echo ''
-    # install_apps
-    # echo ''
-    setup_chrome
-    # echo ''
-    # setup_textedit
-    # echo ''
-    # setup_system
-    # echo ''
-    # setup_vim
-    # echo ''
-    # setup_atom
-    # echo ''
-    # setup_git
+    info "Running install.sh..."
 
-    echo ''
-    success 'All installed!'
-    echo ''
+    if confirm "install dotfiles"
+    then
+        install_dotfiles
+    fi
+
+    if confirm "install homebrew"
+    then
+        install_homebrew
+    fi
+
+    if confirm "install pip"
+    then
+        install_pip
+    fi
+
+    if confirm "install zsh"
+    then
+        install_oh_my_zsh
+    fi
+
+    if confirm "install apps"
+    then
+        install_apps
+    fi
+
+    if confirm "setup Chrome"
+    then
+        setup_chrome
+    fi
+
+    if confirm "setup TextEdit"
+    then
+        setup_textedit
+    fi
+
+    if confirm "setup System"
+    then
+        setup_system
+    fi
+
+    if confirm "setup vim"
+    then
+        setup_vim
+    fi
+
+    if confirm "setup Atom"
+    then
+        setup_atom
+    fi
+
+    if confirm "setup git"
+    then
+        setup_git
+    fi
+
+    success "All installed and setup!"
 }
 
 main
