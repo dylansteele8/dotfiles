@@ -35,7 +35,6 @@ set colorcolumn=80
 
 " Search options
 set incsearch
-set hlsearch
 
 " Strip whitespace on save
 autocmd BufWritePre *  %s/\s\+$//e
@@ -51,6 +50,7 @@ Plug 'Raimondi/delimitMate'
 Plug 'scrooloose/syntastic'
 Plug 'jez/vim-better-sml'
 Plug 'joshdick/onedark.vim'
+Plug 'altercation/vim-colors-solarized'
 Plug 'othree/html5.vim'
 Plug 'Chiel92/vim-autoformat'
 Plug 'octol/vim-cpp-enhanced-highlight'
@@ -59,4 +59,5 @@ Plug 'pangloss/vim-javascript'
 call plug#end()
 
 " Color scheme
-colorscheme slate
+set background=dark
+colorscheme solarized
