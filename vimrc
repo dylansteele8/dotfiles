@@ -1,7 +1,7 @@
 set nocompatible
 
 " Visual
-set cursorline
+" set cursorline
 syntax on
 
 " Pretty splits
